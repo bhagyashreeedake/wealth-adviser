@@ -22,6 +22,26 @@ import { LandingComponent } from './components/landing/landing.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfileComponent } from './components/profile/profile.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { MatTableModule } from '@angular/material/table';
+import { ChartsComponent } from './components/charts/charts.component';
+import { FormsModule } from '@angular/forms'; 
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { InvestmentComponent } from './components/investment/investment.component';
+import { InvesstmentDialogComponent } from './components/invesstment-dialog/invesstment-dialog.component';
+// import { InvestmentComponent } from './components/investment/investment.component';
+// import { InvestmentDialogComponent } from './components/investment-dialog/investment-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { TransactionComponent } from './components/transaction/transaction.component';
+import { NewTransactionDialogComponent } from './components/new-transaction-dialog/new-transaction-dialog.component';
+// import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatNativeDateModule } from '@angular/material/core';
+import { InsuranceComponent } from './components/insurance/insurance.component';
+import { LoansComponent } from './components/loans/loans.component';
+
+
 
 @NgModule({
   declarations: [
@@ -31,8 +51,24 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     LandingComponent,
     HomeComponent,
     ProfileComponent,
+    ChartsComponent,
+    DashboardComponent,
+    InvestmentComponent,
+    InvesstmentDialogComponent,
+    TransactionComponent,
+    NewTransactionDialogComponent,
+    InsuranceComponent,
+    LoansComponent
+    
+    
+    // 
+    
+    // InvestmentComponent,
+    // InvestmentDialogComponent,
+    
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -48,6 +84,14 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     provideStorage(() => getStorage()),
     HotToastModule.forRoot(),
     MatMenuModule,
+    MatDialogModule,
+    SideNavComponent,
+    MatTableModule,
+    MatDatepickerModule,
+    MatRadioModule,
+    MatNativeDateModule
+
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

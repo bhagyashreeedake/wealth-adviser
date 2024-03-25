@@ -10,6 +10,13 @@ import {
   redirectUnauthorizedTo,
 } from '@angular/fire/auth-guard';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ChartsComponent } from './components/charts/charts.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { InvestmentComponent } from './components/investment/investment.component';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { TransactionComponent } from './components/transaction/transaction.component';
+import { InsuranceComponent } from './components/insurance/insurance.component';
+import { LoansComponent } from './components/loans/loans.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
@@ -40,6 +47,18 @@ const routes: Routes = [
     component: ProfileComponent,
     ...canActivate(redirectUnauthorizedToLogin),
   },
+  {
+    path: 'chart',
+    component: ChartsComponent,
+    ...canActivate(redirectUnauthorizedToLogin),
+  },
+  // { path: 'chart', component: ChartsComponent},
+  { path: 'dashboard', component: DashboardComponent},
+  {path: 'investment', component:InvestmentComponent},
+  {path:'side-nav',component:SideNavComponent},
+  { path: 'transactions', component: TransactionComponent},
+  { path: 'insurance', component: InsuranceComponent},
+  { path: 'loan', component: LoansComponent},
 ];
 
 @NgModule({
