@@ -17,6 +17,7 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { InsuranceComponent } from './components/insurance/insurance.component';
 import { LoansComponent } from './components/loans/loans.component';
+import { IncomeExpenseComponent } from './components/income-expense/income-expense.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
@@ -59,6 +60,8 @@ const routes: Routes = [
   { path: 'transactions', component: TransactionComponent},
   { path: 'insurance', component: InsuranceComponent},
   { path: 'loan', component: LoansComponent},
+  { path: 'income-expense', component: IncomeExpenseComponent},
+  
 ];
 
 @NgModule({

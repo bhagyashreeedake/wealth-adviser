@@ -1,0 +1,33 @@
+<div class="container">
+    <h2>Income and Expense</h2>
+  
+    <div class="income-section">
+      <h3>Income</h3>
+      <div class="income-types">
+        <div *ngFor="let type of incomeTypes" class="type">
+          <div class="label">{{ type }}</div>
+          <div class="value">{{ getIncomeValue(type) | currency: 'INR' }}</div>
+        </div>
+      </div>
+      <div class="total-income">Total Income: {{ getTotalIncome() | currency: 'INR' }}</div>
+    </div>
+  
+    <div class="expense-section">
+      <h3>Expense</h3>
+      <div class="expense-types">
+        <div *ngFor="let type of expenseTypes" class="type">
+          <div class="label">{{ type }}</div>
+          <div class="value">{{ getExpenseValue(type) | currency: 'INR' }}</div>
+        </div>
+      </div>
+      <div class="total-expense">Total Expense: {{ getTotalExpense() | currency: 'INR' }}</div>
+    </div>
+  
+    <div class="total-balance">
+      <h3>Total Balance</h3>
+      <div class="value">{{ totalBalance | currency: 'INR' }}</div>
+    </div>
+  
+    <button (click)="openTransactionPopup()">Add Transaction</button>
+  </div>
+  

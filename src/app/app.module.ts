@@ -40,7 +40,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InsuranceComponent } from './components/insurance/insurance.component';
 import { LoansComponent } from './components/loans/loans.component';
-
+import { IncomeExpenseComponent } from './components/income-expense/income-expense.component';
+import { TransactionPopupComponent } from './components/transaction-popup/transaction-popup.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -58,7 +60,10 @@ import { LoansComponent } from './components/loans/loans.component';
     TransactionComponent,
     NewTransactionDialogComponent,
     InsuranceComponent,
-    LoansComponent
+    LoansComponent,
+    IncomeExpenseComponent,
+    TransactionPopupComponent,
+    
     
     
     // 
@@ -89,7 +94,8 @@ import { LoansComponent } from './components/loans/loans.component';
     MatTableModule,
     MatDatepickerModule,
     MatRadioModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule
 
     
   ],
