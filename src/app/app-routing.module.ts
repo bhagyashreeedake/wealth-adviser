@@ -48,12 +48,32 @@ const routes: Routes = [
     component: ProfileComponent,
     ...canActivate(redirectUnauthorizedToLogin),
   },
-  {
-    path: 'chart',
-    component: ChartsComponent,
-    ...canActivate(redirectUnauthorizedToLogin),
-  },
-  // { path: 'chart', component: ChartsComponent},
+  // {
+  //   path: 'chart',
+  //   component: ChartsComponent,
+  //   ...canActivate(redirectUnauthorizedToLogin),
+  // },
+  { path: 'chart', component: ChartsComponent},
+  // {
+  //   path: 'investment',
+  //   component: InvestmentComponent,
+  //   ...canActivate(redirectUnauthorizedToLogin),
+  // },
+  // {
+  //   path: 'side-nav',
+  //   component:SideNavComponent,
+  //   ...canActivate(redirectUnauthorizedToLogin),
+  // },
+  // {
+  //   path: 'transactions',
+  //   component: TransactionComponent,
+  //   ...canActivate(redirectUnauthorizedToLogin),
+  // },
+  // {
+  //   path: 'income-expense',
+  //   component: IncomeExpenseComponent,
+  //   ...canActivate(redirectUnauthorizedToLogin),
+  // },
   { path: 'dashboard', component: DashboardComponent},
   {path: 'investment', component:InvestmentComponent},
   {path:'side-nav',component:SideNavComponent},

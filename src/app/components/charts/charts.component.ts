@@ -27,7 +27,7 @@ export class ChartsComponent implements OnInit {
       };
 
       // Initial animation with a predefined score (e.g., 8)
-      const initialScore = 3;  // Set the initial score here
+      const initialScore = 10;  // Set the initial score here
       // window.updateInitialScore = (score: number) => {
       //   updateMeter(score);
       // };

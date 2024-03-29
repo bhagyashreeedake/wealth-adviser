@@ -43,6 +43,7 @@ import { LoansComponent } from './components/loans/loans.component';
 import { IncomeExpenseComponent } from './components/income-expense/income-expense.component';
 import { TransactionPopupComponent } from './components/transaction-popup/transaction-popup.component';
 import { MatSelectModule } from '@angular/material/select';
+import { InsuraanceDialogComponent } from './components/insuraance-dialog/insuraance-dialog.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { MatSelectModule } from '@angular/material/select';
     LoansComponent,
     IncomeExpenseComponent,
     TransactionPopupComponent,
+    InsuraanceDialogComponent,
     
     
     
