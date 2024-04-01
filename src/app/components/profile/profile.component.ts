@@ -23,6 +23,8 @@ export class ProfileComponent implements OnInit {
     lastName: [''],
     phone: [''],
     address: [''],
+    dateOfBirth: [''],
+    qualification: [''],
   });
 
   constructor(

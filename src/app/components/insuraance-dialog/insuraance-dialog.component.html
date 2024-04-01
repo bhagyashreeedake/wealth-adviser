@@ -15,7 +15,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Premium Paying Type</mat-label>
-      <mat-select placeholder="Premium Paying Type">/matInput>
+      <mat-select placeholder="Premium Paying Type" name="premiumPayingType" [(ngModel)]="formData.premiumPayingType" required>/matInput>
       <!-- <mat-select [(ngModel)]=""> -->
       <mat-option value="Monthly">Monthly</mat-option>
       <mat-option value="Quarterly">Quarterly</mat-option>
