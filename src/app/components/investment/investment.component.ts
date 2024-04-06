@@ -9,53 +9,93 @@ import { InvesstmentDialogComponent } from '../invesstment-dialog/invesstment-di
 })
 export class InvestmentComponent {
   // Define variables to hold investment data
-  emergencyFund!: number;
-  realEstateValue!: number
-  monthlySIP!: number;
-  debtInvestment!: number;
-  equityInvestment!: number
-  goldBondInvestment!: number;
-  savingsInvestment!: number;
+  initialinvestmentAmount!: number;
+  initialinvestmentDate!: Date;
+  regularinvestmentAmount!: number
+  regularinvestmentDate!: Date;
+  investmentType!: string;
+  maturityDate!: Date;
+  maturityAmount!: number;
+  annualRateOfReturn!: number;
+  id: any;
+  // emergencyFund!: number;
+  // realEstateValue!: number
+  // monthlySIP!: number;
+  // debtInvestment!: number;
+  // equityInvestment!: number
+  // goldBondInvestment!: number;
+  // savingsInvestment!: number;
 
   constructor(private dialog: MatDialog) { }
 
-  openInvestmentDialog(): void {
+  openInvestmentDialog(id: number): void {
     const dialogRef = this.dialog.open(InvesstmentDialogComponent, {
       width: '500px',
       data: {
-        emergencyFund: this.emergencyFund,
-        realEstateValue: this.realEstateValue,
-        monthlySIP: this.monthlySIP,
-        debtInvestment: this.debtInvestment,
-        equityInvestment: this.equityInvestment,
-        goldBondInvestment: this.goldBondInvestment,
-        savingsInvestment: this.savingsInvestment
+        initialinvestmentAmount: this.initialinvestmentAmount,
+        initialinvestmentDate: this.initialinvestmentDate,
+        regularinvestmentAmount: this.regularinvestmentAmount,
+        regularinvestmentDate: this.regularinvestmentDate,
+        investmentType: this.investmentType,
+        maturityDate: this.maturityDate,
+        maturityamount: this.maturityAmount,
+        annualRateOfReturn: this.annualRateOfReturn
+        // emergencyFund: this.emergencyFund,
+        // realEstateValue: this.realEstateValue,
+        // monthlySIP: this.monthlySIP,
+        // debtInvestment: this.debtInvestment,
+        // equityInvestment: this.equityInvestment,
+        // goldBondInvestment: this.goldBondInvestment,
+        // savingsInvestment: this.savingsInvestment
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updateInvestments(result);
+        this.updateInvestments(result, id);
       }
     });
   }
 
-  updateInvestments(data: any): void {
+  updateInvestments(data: any, id: number): void {
     // Update investment data based on the result from the dialog
-    this.emergencyFund = data.emergencyFund;
-    this.realEstateValue = data.realEstateValue;
-    this.monthlySIP = data.monthlySIP;
-    this.debtInvestment = data.debtInvestment;
-    this.equityInvestment = data.equityInvestment;
-    this.goldBondInvestment = data.goldBondInvestment;
-    this.savingsInvestment = data.savingsInvestment;
-    this.smallCards[0].textRows.push("actual Rs."+this.emergencyFund)
-    this.smallCards[1].textRows.push("actual Rs."+this.realEstateValue)
-    this.smallCards[2].textRows.push("actual Rs."+this.monthlySIP)
-    this.smallCards[3].textRows.push("actual Rs."+this.debtInvestment)
-    this.smallCards[4].textRows.push("actual Rs."+this.equityInvestment)
-    this.smallCards[5].textRows.push("actual Rs."+this.goldBondInvestment)
-    this.smallCards[6].textRows.push("actual Rs."+this.savingsInvestment)
+    this.initialinvestmentAmount = data.initialinvestmentAmount;
+    this.initialinvestmentDate = data.initialinvestmentDate;
+    this.regularinvestmentAmount = data.regularinvestmentAmount;
+    this.regularinvestmentDate = data.regularinvestmentDate;
+    this.investmentType = data.investmentType;
+    this.maturityDate = data.maturityDate;
+    this.maturityAmount = data.maturityAmount;
+    this.annualRateOfReturn = data.annualRateOfReturn;
+
+    // Find the small card with the matching id and update its textRows
+  const smallCardIndex = this.smallCards.findIndex(card => card.id === id);
+  if (smallCardIndex !== -1) {
+    this.smallCards[smallCardIndex].textRows.push(
+      "Initial investment Amount Rs." + this.initialinvestmentAmount,
+      "Initila investment Date: " + this.initialinvestmentDate,
+      "Regular investment Amount Rs." + this.regularinvestmentAmount,
+      "Regular investment Date: " + this.regularinvestmentDate,
+      "Investment Type: " + this.investmentType,
+      "Maturity Date: " + this.maturityDate,
+      "Maturity Amount: " + this.maturityAmount,
+      "Rate Of Return In %: " + this.annualRateOfReturn
+    );
+  }
+    // this.emergencyFund = data.emergencyFund;
+    // this.realEstateValue = data.realEstateValue;
+    // this.monthlySIP = data.monthlySIP;
+    // this.debtInvestment = data.debtInvestment;
+    // this.equityInvestment = data.equityInvestment;
+    // this.goldBondInvestment = data.goldBondInvestment;
+    // this.savingsInvestment = data.savingsInvestment;
+    // this.smallCards[0].textRows.push("actual Rs."+this.emergencyFund)
+    // this.smallCards[1].textRows.push("actual Rs."+this.realEstateValue)
+    // this.smallCards[2].textRows.push("actual Rs."+this.monthlySIP)
+    // this.smallCards[3].textRows.push("actual Rs."+this.debtInvestment)
+    // this.smallCards[4].textRows.push("actual Rs."+this.equityInvestment)
+    // this.smallCards[5].textRows.push("actual Rs."+this.goldBondInvestment)
+    // this.smallCards[6].textRows.push("actual Rs."+this.savingsInvestment)
   }
    
 

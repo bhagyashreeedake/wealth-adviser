@@ -10,22 +10,26 @@ import { InsuraanceDialogComponent } from '../insuraance-dialog/insuraance-dialo
 })
 export class InsuranceComponent {
   coverAmount!: number;
-  premiumAmount!: number
   insuredDate!: Date;
+  premiumAmount!: number
+  premiumDate!: Date;
   premiumPayingType!: string;
   maturityDate!: Date;
   maturityAmount!: number;
   annualRateOfReturn!: number;
+  id: any;
 
   constructor(private dialog: MatDialog) { }
 
-  openInsuraanceDialog(): void {
+  openInsuraanceDialog(id: number): void {
+    
     const dialogRef = this.dialog.open(InsuraanceDialogComponent, {
       width: '500px',
       data: {
         coverAmount: this.coverAmount,
-        premiumAmount: this.premiumAmount,
         insuredDate: this.insuredDate,
+        premiumAmount: this.premiumAmount,
+        premiumDate: this.premiumDate,
         premiumPayingType: this.premiumPayingType,
         maturityDate: this.maturityDate,
         maturityamount: this.maturityAmount,
@@ -34,28 +38,39 @@ export class InsuranceComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log("result after closing the insurance component", result)
       if (result) {
-        this.updateInsurance(result);
+        this.updateInsurance(result, id);
       }
     });
   }
 
-  updateInsurance(data: any): void {
+  updateInsurance(data: any, id: number): void {
     // Update investment data based on the result from the dialog
     this.coverAmount = data.coverAmount;
-    this.premiumAmount = data.premiumAmount;
     this.insuredDate = data.insuredDate;
+    this.premiumAmount = data.premiumAmount;
+    this.premiumDate = data.premiumDate;
     this.premiumPayingType = data.premiumPayingType;
     this.maturityDate = data.maturityDate;
     this.maturityAmount = data.maturityAmount;
-    this.annualRateOfReturn = data.rateOfReturn;
-    this.smallCards[0].textRows.push("Cover Amount Rs."+this.coverAmount)
-    this.smallCards[0].textRows.push("Premium Amount Rs."+this.premiumAmount)
-    this.smallCards[0].textRows.push("Insured Date"+this.insuredDate)
-    this.smallCards[0].textRows.push("Premium Pay Type"+this.premiumPayingType)
-    this.smallCards[0].textRows.push("Maturity Date "+this.maturityDate)
-    this.smallCards[0].textRows.push("Maturity Amount"+this.maturityAmount)
-    this.smallCards[0].textRows.push("Rate Of Return In %"+this.annualRateOfReturn)
+    this.annualRateOfReturn = data.annualRateOfReturn;
+
+    // Find the small card with the matching id and update its textRows
+  const smallCardIndex = this.smallCards.findIndex(card => card.id === id);
+  if (smallCardIndex !== -1) {
+    this.smallCards[smallCardIndex].textRows.push(
+      "Cover Amount Rs." + this.coverAmount,
+      "Insured Date: " + this.insuredDate,
+      "Premium Amount Rs." + this.premiumAmount,
+      "Premium Date: " + this.premiumDate,
+      "Premium Pay Type: " + this.premiumPayingType,
+      "Maturity Date: " + this.maturityDate,
+      "Maturity Amount: " + this.maturityAmount,
+      "Rate Of Return In %: " + this.annualRateOfReturn
+    );
+  }
+    
   }
    
 

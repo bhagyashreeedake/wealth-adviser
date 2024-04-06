@@ -62,6 +62,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveProfile() {
+    console.log("form value",this.profileForm.value  )
     const { uid, ...data } = this.profileForm.value;
 
     if (!uid) {

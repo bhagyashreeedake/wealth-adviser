@@ -2,24 +2,24 @@
 <div mat-dialog-content>
   <form #insuranceForm="ngForm" (ngSubmit)="submitForm()">
     <mat-form-field appearance="outline">
-      <mat-label>Cover Amount</mat-label>
-      <input matInput placeholder="Cover Amount" name="coverAmount" [(ngModel)]="formData.coverAmount" type="number" required>
+      <mat-label>Loan Amount</mat-label>
+      <input matInput placeholder="Loan Amount" name="loanAmount" [(ngModel)]="formData.loanAmount" type="number" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Insured Date</mat-label>
-      <input matInput placeholder="Insured Date" name="insuredDate" [(ngModel)]="formData.insuredDate" type="date" required>
+      <mat-label>Loan disbursment Date</mat-label>
+      <input matInput placeholder="Loan disbursment Date" name="loandisbursmentDate" [(ngModel)]="formData.loandisbursmentDate" type="date" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Premium Amount</mat-label>
-      <input matInput placeholder="Premium Amount" name="premiumAmount" [(ngModel)]="formData.premiumAmount" type="number" required>
+      <mat-label>EMI Amount</mat-label>
+      <input matInput placeholder="EMI Amount" name="emiAmount" [(ngModel)]="formData.emiAmount" type="number" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Premium Date</mat-label>
-      <input matInput placeholder="Premium Date" name="premmiumDate" [(ngModel)]="formData.premiumDate" type="date" required>
+      <mat-label>EMI Date</mat-label>
+      <input matInput placeholder="EMI Date" name="emiDate" [(ngModel)]="formData.emiDate" type="date" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Premium Paying Type</mat-label>
-      <mat-select placeholder="Premium Paying Type" name="premiumPayingType" [(ngModel)]="formData.premiumPayingType" required>/matInput>
+      <mat-label>EMI Paying Type</mat-label>
+      <mat-select placeholder="EMI Paying Type" name="emiPayingType" [(ngModel)]="formData.emiPayingType" required>/matInput>
       <!-- <mat-select [(ngModel)]=""> -->
       <mat-option value="Monthly">Monthly</mat-option>
       <mat-option value="Quarterly">Quarterly</mat-option>
@@ -40,8 +40,8 @@
       <input matInput placeholder="Maturity Amount" name="maturityAmount" [(ngModel)]="formData.maturityAmount" type="number">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Annual Rate of Return In %</mat-label>
-      <input matInput placeholder="Annual Rate of Return In %" name="annualRateOfReturn" [(ngModel)]="formData.annualRateOfReturn" type="number">
+      <mat-label>Annual Rate of Interest In %</mat-label>
+      <input matInput placeholder="Annual Rate of Interest In %" name="annualRateOfInterest" [(ngModel)]="formData.annualRateOfInterest" type="number">
     </mat-form-field>
     <!-- <mat-form-field appearance="outline">
       <mat-label>Investment as Savings</mat-label>
@@ -53,4 +53,5 @@
   <button mat-button (click)="cancel()">Cancel</button>
   <button mat-button color="primary" (click)="submitForm()" [disabled]="insuranceForm.invalid">Submit</button>
 </div>
+
 

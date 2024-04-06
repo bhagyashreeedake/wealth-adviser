@@ -39,17 +39,24 @@
     <div class="row">
       <mat-form-field>
         <input
-          type="date"
+          
           matInput
-          formControlDOB="dateOfBirth"
+          [matDatepicker]="picker"
+          formControlName="dateOfBirth"
           placeholder="Date Of Birth"
         />
+        
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      
       </mat-form-field>
+
+
       <mat-form-field>
         <input
           type="text"
           matInput
-          formControlQualification="qualification"
+          formControlName="qualification"
           placeholder="Qualification"
         />
       </mat-form-field>

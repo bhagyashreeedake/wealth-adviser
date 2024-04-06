@@ -6,8 +6,10 @@
         <h3>{{ heading }}</h3>
         <div id="smallCardContainer" class="small-card-container">
             <!-- Displaying small cards dynamically -->
-            <div *ngFor="let smallCard of smallCards; let i = index" class="small-card"
-                (click)="openInsuraanceDialog()">
+            <!-- <div *ngFor="let smallCard of smallCards; let i = index" class="small-card"
+                (click)="openInsuraanceDialog(i)"> -->
+            <div *ngFor="let smallCard of smallCards" class="small-card" (click)="openInsuraanceDialog(smallCard.id)">
+
                 <!-- cardClickHandler(smallCard.textRows[2])"> -->
                 <div class="text-row">{{ smallCard.textRows[0] }}</div>
                 <div class="text-row">{{ smallCard.textRows[1] }}</div>
@@ -18,6 +20,8 @@
                 <div class="text-row">{{ smallCard.textRows[6] }}</div>
                 <div class="text-row">{{ smallCard.textRows[7] }}</div>
                 <div class="text-row">{{ smallCard.textRows[8] }}</div>
+                <div class="text-row">{{ smallCard.textRows[9] }}</div>
+
 
             </div>
         </div>
