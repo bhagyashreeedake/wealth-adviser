@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DataServiceService } from 'src/app/services/data/data-service.service';
 
 @Component({
   selector: 'app-transaction-popup',
@@ -15,10 +16,20 @@ export class TransactionPopupComponent {
 
   constructor(
     public dialogRef: MatDialogRef<TransactionPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dataservice:DataServiceService
   ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  updateincomeexpence(){
+    debugger
+    if(this.transactionType == 'Income'){
+      this.dataservice.addIncome(this.amount)
+    }else{
+      this.dataservice.addExpense(this.amount)
+    }
   }
 }

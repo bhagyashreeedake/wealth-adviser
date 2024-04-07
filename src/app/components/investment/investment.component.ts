@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InvesstmentDialogComponent } from '../invesstment-dialog/invesstment-dialog.component';
-
+import { DataServiceService } from 'src/app/services/data/data-service.service';
 @Component({
   selector: 'app-investment',
   templateUrl: './investment.component.html',
   styleUrls: ['./investment.component.css']
 })
 export class InvestmentComponent {
+  [x: string]: any;
   // Define variables to hold investment data
   initialinvestmentAmount!: number;
   initialinvestmentDate!: Date;
@@ -26,7 +27,7 @@ export class InvestmentComponent {
   // goldBondInvestment!: number;
   // savingsInvestment!: number;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private dataservice:DataServiceService) { }
 
   openInvestmentDialog(id: number): void {
     const dialogRef = this.dialog.open(InvesstmentDialogComponent, {
@@ -119,6 +120,11 @@ export class InvestmentComponent {
 
   cardClickHandler(cardText: string) {
     alert(`Clicked: ${cardText}`);
+  }
+
+  
+  onSubmit(initialinvestmentAmount: number, regularinvestmentAmount: number, maturityAmount: number) {
+    this.dataservice.addInvestment(initialinvestmentAmount, regularinvestmentAmount, maturityAmount);
   }
 }
 

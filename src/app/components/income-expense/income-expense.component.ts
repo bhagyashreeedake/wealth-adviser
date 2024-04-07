@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionPopupComponent } from '../transaction-popup/transaction-popup.component';
+import { DataServiceService } from 'src/app/services/data/data-service.service';
+import { Subscription } from 'rxjs';
 // import { TransactionPopupComponent } from './transaction-popup/transaction-popup.component';
 
 @Component({
@@ -8,7 +10,7 @@ import { TransactionPopupComponent } from '../transaction-popup/transaction-popu
   templateUrl: './income-expense.component.html',
   styleUrls: ['./income-expense.component.css']
 })
-export class IncomeExpenseComponent {
+export class IncomeExpenseComponent implements OnInit {
   activeIncome: number = 0;
   passiveIncome: number = 0;
   otherIncome: number = 0;
@@ -17,10 +19,18 @@ export class IncomeExpenseComponent {
   yearlyExpense: number = 0;
   totalBalance: number = 0;
 
+  private  totalBalanceSubscription!: Subscription;
+
+
   incomeTypes: string[] = ['Active Income', 'Passive Income', 'Other Income'];
   expenseTypes: string[] = ['Monthly Expense', 'Quarterly Expense', 'Yearly Expense'];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private dataservice:DataServiceService) {}
+  ngOnInit(): void {
+    this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
+      this.totalBalance= totalbalance
+    })
+  }
 
   openTransactionPopup(): void {
     const dialogRef = this.dialog.open(TransactionPopupComponent, {
@@ -50,7 +60,7 @@ export class IncomeExpenseComponent {
     } else if (data.incomeType === 'Other Income') {
       this.otherIncome += data.amount;
     }
-    this.calculateTotalBalance();
+    // this.calculateTotalBalance();
   }
 
   handleExpenseTransaction(data: any): void {
@@ -61,12 +71,12 @@ export class IncomeExpenseComponent {
     } else if (data.expenseType === 'Yearly Expense') {
       this.yearlyExpense += data.amount;
     }
-    this.calculateTotalBalance();
+    // this.calculateTotalBalance();
   }
 
-  calculateTotalBalance(): void {
-    this.totalBalance = this.activeIncome + this.passiveIncome + this.otherIncome - this.monthlyExpense - this.quarterlyExpense - this.yearlyExpense;
-  }
+  // calculateTotalBalance(): void {
+  //   this.totalBalance = this.activeIncome + this.passiveIncome + this.otherIncome - this.monthlyExpense - this.quarterlyExpense - this.yearlyExpense;
+  // }
 
   getTotalIncome(): number {
     return this.activeIncome + this.passiveIncome + this.otherIncome;

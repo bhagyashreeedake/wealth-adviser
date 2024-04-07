@@ -1,6 +1,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DataServiceService } from 'src/app/services/data/data-service.service';
 
 @Component({
   selector: 'app-invesstment-dialog',
@@ -14,7 +15,8 @@ export class InvesstmentDialogComponent implements OnInit {
   
     constructor(
       public dialogRef: MatDialogRef<InvesstmentDialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      private dataservice:DataServiceService
     ) { }
   
     ngOnInit(): void {
@@ -24,6 +26,7 @@ export class InvesstmentDialogComponent implements OnInit {
   
     submitForm(): void {
       this.dialogRef.close(this.formData);
+      this.dataservice.addInvestment(this.formData.initialinvestmentAmount,this.formData.regularinvestmentAmount,this.formData.maturityAmount);
     }
   
     cancel(): void {

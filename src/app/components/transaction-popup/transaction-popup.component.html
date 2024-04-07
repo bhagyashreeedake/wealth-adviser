@@ -36,5 +36,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="{type: transactionType, incomeType: incomeType, expenseType: expenseType, description: description, amount: amount}" cdkFocusInitial>Save</button>
+  <button mat-button (click)="updateincomeexpence()" [mat-dialog-close]="{type: transactionType, incomeType: incomeType, expenseType: expenseType, description: description, amount: amount}" cdkFocusInitial>Save</button>
 </div>

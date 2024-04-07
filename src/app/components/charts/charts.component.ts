@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { Subscription } from 'rxjs';
+import { DataServiceService } from 'src/app/services/data/data-service.service';
 
 
 @Component({
@@ -8,10 +10,35 @@ import Chart from 'chart.js/auto';
   styleUrls: ['./charts.component.css']
 })
 export class ChartsComponent implements OnInit {
+  totalIncome!:number
+  totalExpence!:number 
+  totalBalance!:number 
+  private totalIncomeSubscription!: Subscription;
+  private  totalexpencesubscription!: Subscription;
+  private  totalBalanceSubscription!: Subscription;
+  myDonutChart: any;
 
-  constructor() { }
+  constructor(private dataservice:DataServiceService) { }
 
   ngOnInit(): void {
+
+    this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
+      this.totalIncome = income;
+      console.log('income', this.totalIncome)
+      this.updateChartData();
+
+    })
+
+    this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
+      this.totalExpence = expence;
+      console.log('expence', this.totalExpence)
+      this.updateChartData();
+    })
+
+    this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
+      this.totalBalance= totalbalance
+    })
+    let expence = this.dataservice.getlatestTotalExpence()
     // Initialize your DOM-related operations in ngOnInit
     document.addEventListener('DOMContentLoaded', () => {
       const meterArrow = document.querySelector('.scoreMeter .meterArrow') as HTMLElement | null;
@@ -48,11 +75,14 @@ export class ChartsComponent implements OnInit {
 
   initChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-    const myDonutChart = new Chart(ctx, {
+    let chartnumbers:number[] = [];
+    chartnumbers.push(this.totalExpence);
+    chartnumbers.push(this.totalIncome);
+    this.myDonutChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
         datasets: [{
-          data: [10, 20],
+        data: [this.totalExpence, this.totalIncome],
           backgroundColor: ['#ff0000', '#00ff00'],
           // Additional dataset properties if needed
         }],
@@ -63,5 +93,12 @@ export class ChartsComponent implements OnInit {
       }
     });
   }
+  updateChartData(): void {
+    if (this.myDonutChart) {
+      this.myDonutChart.data.datasets[0].data = [this.totalExpence, this.totalIncome];
+      this.myDonutChart.update();
+    }
+  }
+  
   
 }
