@@ -19,6 +19,7 @@ export class InvestmentComponent {
   maturityAmount!: number;
   annualRateOfReturn!: number;
   id: any;
+  totalInitialInvestment: number = 0; // Initialize total initial investment
   // emergencyFund!: number;
   // realEstateValue!: number
   // monthlySIP!: number;
@@ -68,6 +69,11 @@ export class InvestmentComponent {
     this.maturityDate = data.maturityDate;
     this.maturityAmount = data.maturityAmount;
     this.annualRateOfReturn = data.annualRateOfReturn;
+    this.totalInitialInvestment += this.initialinvestmentAmount;
+    this['dataservice'].setTotalInitialInvestment(this.totalInitialInvestment);
+
+
+    // this.totalInitialInvestment += this.initialinvestmentAmount;
 
     // Find the small card with the matching id and update its textRows
   const smallCardIndex = this.smallCards.findIndex(card => card.id === id);
@@ -123,8 +129,8 @@ export class InvestmentComponent {
   }
 
   
-  onSubmit(initialinvestmentAmount: number, regularinvestmentAmount: number, maturityAmount: number) {
-    this.dataservice.addInvestment(initialinvestmentAmount, regularinvestmentAmount, maturityAmount);
-  }
+  // onSubmit(initialinvestmentAmount: number, regularinvestmentAmount: number, maturityAmount: number) {
+  //   this.dataservice.addInvestment(initialinvestmentAmount, regularinvestmentAmount, maturityAmount);
+  // }
 }
 

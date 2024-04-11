@@ -10,17 +10,27 @@ import { DataServiceService } from 'src/app/services/data/data-service.service';
   styleUrls: ['./charts.component.css']
 })
 export class ChartsComponent implements OnInit {
+  totalInitialInvestment: number = 0;
+
   totalIncome!:number
   totalExpence!:number 
   totalBalance!:number 
+  // totalInitialamount!: number
   private totalIncomeSubscription!: Subscription;
   private  totalexpencesubscription!: Subscription;
   private  totalBalanceSubscription!: Subscription;
+  private totalInitialInvestmentSubscription!: Subscription;
   myDonutChart: any;
+
+  
 
   constructor(private dataservice:DataServiceService) { }
 
   ngOnInit(): void {
+
+    this.dataservice.totalInitialInvestment$.subscribe(total => {
+      this.totalInitialInvestment = total;
+    })
 
     this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
       this.totalIncome = income;
@@ -28,6 +38,12 @@ export class ChartsComponent implements OnInit {
       this.updateChartData();
 
     })
+    // this.totalInitialamountSubscription = this.dataservice.getlatestTotalInitialamount().subscribe(totalInitialamount=>{
+    //   this.totalInitialamount = totalInitialamount
+    //   // /console.log('income', this.totalIncome)
+    //   // this.updateChartData();
+
+    // })
 
     this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
       this.totalExpence = expence;

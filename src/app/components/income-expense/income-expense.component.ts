@@ -11,6 +11,29 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./income-expense.component.css']
 })
 export class IncomeExpenseComponent implements OnInit {
+
+transactions: any[] = []; // Define an array to store transactions
+// openTransactionPopup : boolean = false;
+
+deleteTransaction(transaction: any) {
+// Assuming this method deletes a transaction from the array
+const index = this.transactions.indexOf(transaction);
+if (index !== -1) {
+  this.transactions.splice(index, 1);
+}
+}
+addTransaction(transaction: any) {
+  this.transactions.push(transaction);
+}
+
+// openNewTransactionDialog() {
+//   const newTransaction = {
+//   date: '2024-04-10', // Replace with actual date
+//   type: 'Expense', // Replace with actual type (Income or Expense)
+//   amount: 100 // Replace with actual amount
+// };
+// this.transactions.push(newTransaction);
+// }
   activeIncome: number = 0;
   passiveIncome: number = 0;
   otherIncome: number = 0;

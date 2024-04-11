@@ -13,6 +13,7 @@ export class TransactionPopupComponent {
   expenseType: string = '';
   description: string = '';
   amount: number = 0;
+  date!: Date;
 
   constructor(
     public dialogRef: MatDialogRef<TransactionPopupComponent>,

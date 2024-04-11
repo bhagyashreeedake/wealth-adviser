@@ -26,7 +26,7 @@ export class InvesstmentDialogComponent implements OnInit {
   
     submitForm(): void {
       this.dialogRef.close(this.formData);
-      this.dataservice.addInvestment(this.formData.initialinvestmentAmount,this.formData.regularinvestmentAmount,this.formData.maturityAmount);
+      // this.dataservice.addInvestment(this.formData.initialinvestmentAmount,this.formData.regularinvestmentAmount,this.formData.maturityAmount);
     }
   
     cancel(): void {
