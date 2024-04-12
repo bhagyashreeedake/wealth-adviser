@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoanDialogComponent } from '../loan-dialog/loan-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DataServiceService } from 'src/app/services/data/data-service.service';
 
 @Component({
   selector: 'app-loans',
@@ -18,8 +19,9 @@ export class LoansComponent {
   maturityAmount!: number;
   annualRateOfInterest!: number;
   id: any;
+  totalLoanAmount: number = 0;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private dataservice:DataServiceService) { }
 
   openLoanDialog(id: number): void {
     
@@ -55,6 +57,8 @@ export class LoansComponent {
     this.maturityDate = data.maturityDate;
     this.maturityAmount = data.maturityAmount;
     this.annualRateOfInterest = data.annualRateOfInterest;
+    this.totalLoanAmount += this.loanAmount;
+    this['dataservice'].setTotalLoanAmount(this.totalLoanAmount);
 
     // Find the small card with the matching id and update its textRows
   const smallCardIndex = this.smallCards.findIndex(card => card.id === id);

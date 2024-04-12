@@ -11,7 +11,7 @@ import { DataServiceService } from 'src/app/services/data/data-service.service';
 })
 export class ChartsComponent implements OnInit {
   totalInitialInvestment: number = 0;
-
+  totalLoanAmount: number = 0;
   totalIncome!:number
   totalExpence!:number 
   totalBalance!:number 
@@ -20,6 +20,7 @@ export class ChartsComponent implements OnInit {
   private  totalexpencesubscription!: Subscription;
   private  totalBalanceSubscription!: Subscription;
   private totalInitialInvestmentSubscription!: Subscription;
+  private totalLoanamountSubscription!: Subscription;
   myDonutChart: any;
 
   
@@ -30,6 +31,10 @@ export class ChartsComponent implements OnInit {
 
     this.dataservice.totalInitialInvestment$.subscribe(total => {
       this.totalInitialInvestment = total;
+    })
+
+    this.dataservice.totalLoanAmount$.subscribe(total => {
+      this.totalLoanAmount = total;
     })
 
     this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{

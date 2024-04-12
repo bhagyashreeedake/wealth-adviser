@@ -13,6 +13,9 @@ export class DataServiceService {
   private totalInitialamountsubject = new BehaviorSubject<number>(0); 
   private totalInitialInvestmentSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   totalInitialInvestment$: Observable<number> = this.totalInitialInvestmentSubject.asObservable();
+  private totalLoanAmountSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  totalLoanAmount$: Observable<number> = this.totalLoanAmountSubject.asObservable();
+
 
 
   income$ = this.incomeSubject.asObservable();
@@ -25,6 +28,10 @@ export class DataServiceService {
 
   setTotalInitialInvestment(total: number): void {
     this.totalInitialInvestmentSubject.next(total);
+  }
+
+  setTotalLoanAmount(total: number): void {
+    this.totalLoanAmountSubject.next(total);
   }
 
   addIncome(amount: number) {
