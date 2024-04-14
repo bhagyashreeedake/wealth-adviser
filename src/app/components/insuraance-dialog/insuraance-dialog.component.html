@@ -15,7 +15,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Premium Date</mat-label>
-      <input matInput placeholder="Premium Date" name="premmiumDate" [(ngModel)]="formData.premiumDate" type="date" required>
+      <input matInput placeholder="Premium Date" name="premiumDate" [(ngModel)]="formData.premiumDate" type="date" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Premium Paying Type</mat-label>
@@ -48,6 +48,7 @@
       <input matInput placeholder="Investment as Savings" name="savingsInvestment" [(ngModel)]="formData.savingsInvestment" type="number" required>
     </mat-form-field> -->
   </form>
+  maturity amount:{{formData.maturityAmount}}
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="cancel()">Cancel</button>

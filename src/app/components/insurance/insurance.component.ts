@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 // import { InvesstmentDialogComponent } from '../invesstment-dialog/invesstment-dialog.component';
 import { InsuraanceDialogComponent } from '../insuraance-dialog/insuraance-dialog.component';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { InsuranceService } from 'src/app/services/insurance.service';
+import { UsersService } from 'src/app/services/users.service';
+import { ProfileInsurance } from 'src/app/models/insurance';
 
 @Component({
   selector: 'app-insurance',
   templateUrl: './insurance.component.html',
   styleUrls: ['./insurance.component.css']
 })
-export class InsuranceComponent {
+export class InsuranceComponent implements OnInit {
   coverAmount!: number;
   insuredDate!: Date;
   premiumAmount!: number
@@ -18,8 +22,83 @@ export class InsuranceComponent {
   maturityAmount!: number;
   annualRateOfReturn!: number;
   id: any;
+  user$ = this.usersService.currentUserProfile$;
+  insuranceInfo:any[]=[];
 
-  constructor(private dialog: MatDialog) { }
+
+  constructor(private dialog: MatDialog, private insuranceservice:InsuranceService, private usersService :UsersService) { }
+  ngOnInit(): void {
+    debugger
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits null
+          return of(null);
+        }
+        // Otherwise, return the observable returned by getInsuranceByUid
+        return this.insuranceservice.getInsuranceByUid(data.uid, '2');
+      })
+    ).subscribe((insuranceData:any) => {
+      if (insuranceData) {
+        // Handle the insurance data here
+        debugger
+        this.insuranceInfo.push(insuranceData)
+        console.log('Insurance Data:', insuranceData);
+        console.log("insurance inside array ", this.insuranceInfo)
+        console.log("id",this.insuranceInfo[0].id)
+
+        if(this.insuranceInfo){
+          for(let i=0;i<this.insuranceInfo.length;i++){
+
+            this.updateInsurance(this.insuranceInfo[i],this.insuranceInfo[i].id)
+          }
+        }
+      } else {
+        // Handle case when insurance data is null
+        console.log('No insurance data found.');
+      }
+    });
+
+
+    
+  
+  }
+
+  // ngOnInit(): void {
+  //   debugger
+  //   this.user$.pipe(
+  //     switchMap((data: any) => {
+  //       if (!data || !data.uid) {
+  //         // If user data or UID is not available, return an observable that emits null
+  //         return of(null);
+  //       }
+  //       // Map each small card to an observable that fetches insurance data
+  //       const insuranceObservables = this.smallCards.map((card, index) => {
+  //         return this.insuranceservice.getInsuranceByUid(data.uid, index.toString());
+  //       });
+  //       // Combine all insurance observables into a single observable
+  //       return forkJoin(insuranceObservables);
+  //     })
+  //   ).subscribe((insuranceData: (ProfileInsurance | null)[] | null) => {
+  //     if (insuranceData && insuranceData.length > 0) {
+  //       // Handle the insurance data here
+  //       debugger
+  //       this.insuranceInfo.push(...insuranceData);
+  //       console.log('Insurance Data:', insuranceData);
+  //       console.log("insurance inside array ", this.insuranceInfo);
+  //       console.log("id", this.insuranceInfo[0].id);
+    
+  //       // If you need to update insurance, do it here
+  //       for (let i = 0; i < this.insuranceInfo.length; i++) {
+  //         this.updateInsurance(this.insuranceInfo[i], this.insuranceInfo[i].id);
+  //       }
+  //     } else {
+  //       // Handle case when insurance data is null or empty
+  //       console.log('No insurance data found.');
+  //     }
+  //   });
+    
+  // }
 
   openInsuraanceDialog(id: number): void {
     
@@ -33,7 +112,8 @@ export class InsuranceComponent {
         premiumPayingType: this.premiumPayingType,
         maturityDate: this.maturityDate,
         maturityamount: this.maturityAmount,
-        annualRateOfReturn: this.annualRateOfReturn
+        annualRateOfReturn: this.annualRateOfReturn,
+        id: id
       }
     });
 
@@ -46,6 +126,7 @@ export class InsuranceComponent {
   }
 
   updateInsurance(data: any, id: number): void {
+    debugger
     // Update investment data based on the result from the dialog
     this.coverAmount = data.coverAmount;
     this.insuredDate = data.insuredDate;
