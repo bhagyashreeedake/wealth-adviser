@@ -6,6 +6,7 @@ import { forkJoin, of, switchMap } from 'rxjs';
 import { InsuranceService } from 'src/app/services/insurance.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ProfileInsurance } from 'src/app/models/insurance';
+import { uid } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
   selector: 'app-insurance',
@@ -24,19 +25,33 @@ export class InsuranceComponent implements OnInit {
   id: any;
   user$ = this.usersService.currentUserProfile$;
   insuranceInfo:any[]=[];
+  data: any;
+  
 
 
   constructor(private dialog: MatDialog, private insuranceservice:InsuranceService, private usersService :UsersService) { }
   ngOnInit(): void {
     debugger
+    
     this.user$.pipe(
       switchMap((data: any) => {
         if (!data || !data.uid) {
           // If user data or UID is not available, return an observable that emits null
           return of(null);
-        }
+        } 
+      //   else {
+      //     return this.usersService.getIdByUid(data.uid).pipe(
+      //     switchMap((id: string) => {
+      //       // Return the observable returned by getInsuranceByUid with the fetched ID
+      //       return this.insuranceservice.getInsuranceByUid(data.uid, id);
+      //     })s
+      //   );
+      // }
+      // })
         // Otherwise, return the observable returned by getInsuranceByUid
-        return this.insuranceservice.getInsuranceByUid(data.uid, '2');
+        // for(let i=0;i<this.insuranceInfo.length;i++){
+        return this.insuranceservice.getInsuranceByUid(data.uid, '1');
+      
       })
     ).subscribe((insuranceData:any) => {
       if (insuranceData) {

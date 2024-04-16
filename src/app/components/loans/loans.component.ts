@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { LoanDialogComponent } from '../loan-dialog/loan-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { LoanService } from 'src/app/services/loan.service';
+import { ProfileLoan } from 'src/app/models/loan';
+import { uid } from 'chart.js/dist/helpers/helpers.core';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-loans',
@@ -20,9 +25,47 @@ export class LoansComponent {
   annualRateOfInterest!: number;
   id: any;
   totalLoanAmount: number = 0;
+  user$ = this.usersService.currentUserProfile$;
+  loanInfo:any[]=[];
+  data: any;
 
-  constructor(private dialog: MatDialog, private dataservice:DataServiceService) { }
+  constructor(private dialog: MatDialog, private dataservice:DataServiceService, private usersService: UsersService, private loanservice: LoanService ) { }
+  ngOnInit(): void {
+    debugger
+    
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits null
+          return of(null);
+        } 
+        return this.loanservice.getLoanByUid(data.uid, '1');
+      
+      })
+    ).subscribe((loanData:any) => {
+      if (loanData) {
+        // Handle the insurance data here
+        debugger
+        this.loanInfo.push(loanData)
+        console.log('loan Data:', loanData);
+        console.log("loan inside array ", this.loanInfo)
+        console.log("id",this.loanInfo[0].id)
 
+        if(this.loanInfo){
+          for(let i=0;i<this.loanInfo.length;i++){
+
+            this.updateLoan(this.loanInfo[i],this.loanInfo[i].id)
+          }
+        }
+      } else {
+        // Handle case when insurance data is null
+        console.log('No loan data found.');
+      }
+    });
+ 
+ 
+  }
+  
   openLoanDialog(id: number): void {
     
     const dialogRef = this.dialog.open(LoanDialogComponent, {
@@ -35,7 +78,8 @@ export class LoansComponent {
         emiPayingType: this.emiPayingType,
         maturityDate: this.maturityDate,
         maturityamount: this.maturityAmount,
-        annualRateOfInterest: this.annualRateOfInterest
+        annualRateOfInterest: this.annualRateOfInterest,
+        id:id
       }
     });
 

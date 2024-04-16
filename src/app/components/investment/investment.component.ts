@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InvesstmentDialogComponent } from '../invesstment-dialog/invesstment-dialog.component';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { InvestmentService } from 'src/app/services/investment.service';
+import { ProfileInvestment } from 'src/app/models/investment';
+import { uid } from 'chart.js/dist/helpers/helpers.core';
+import { UsersService } from 'src/app/services/users.service';
+
 @Component({
   selector: 'app-investment',
   templateUrl: './investment.component.html',
@@ -19,7 +25,10 @@ export class InvestmentComponent {
   maturityAmount!: number;
   annualRateOfReturn!: number;
   id: any;
-  totalInitialInvestment: number = 0; // Initialize total initial investment
+  totalInitialInvestment: number = 0; 
+  user$ = this.usersService.currentUserProfile$;
+  investmentInfo:any[]=[];
+  data: any;// Initialize total initial investment
   // emergencyFund!: number;
   // realEstateValue!: number
   // monthlySIP!: number;
@@ -28,7 +37,42 @@ export class InvestmentComponent {
   // goldBondInvestment!: number;
   // savingsInvestment!: number;
 
-  constructor(private dialog: MatDialog, private dataservice:DataServiceService) { }
+  constructor(private dialog: MatDialog, private dataservice:DataServiceService, private investmentservice: InvestmentService, private usersService: UsersService) { }
+  ngOnInit(): void {
+    debugger
+    
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits null
+          return of(null);
+        } 
+        return this.investmentservice.getInvestmentByUid(data.uid, '1');
+      
+      })
+    ).subscribe((investmentData:any) => {
+      if (investmentData) {
+        // Handle the insurance data here
+        debugger
+        this.investmentInfo.push(investmentData)
+        console.log('Investment Data:', investmentData);
+        console.log("investment inside array ", this.investmentInfo)
+        console.log("id",this.investmentInfo[0].id)
+
+        if(this.investmentInfo){
+          for(let i=0;i<this.investmentInfo.length;i++){
+
+            this.updateInvestments(this.investmentInfo[i],this.investmentInfo[i].id)
+          }
+        }
+      } else {
+        // Handle case when insurance data is null
+        console.log('No investment data found.');
+      }
+    });
+ 
+ 
+  }
 
   openInvestmentDialog(id: number): void {
     const dialogRef = this.dialog.open(InvesstmentDialogComponent, {
@@ -41,7 +85,8 @@ export class InvestmentComponent {
         investmentType: this.investmentType,
         maturityDate: this.maturityDate,
         maturityamount: this.maturityAmount,
-        annualRateOfReturn: this.annualRateOfReturn
+        annualRateOfReturn: this.annualRateOfReturn,
+        id:id
         // emergencyFund: this.emergencyFund,
         // realEstateValue: this.realEstateValue,
         // monthlySIP: this.monthlySIP,

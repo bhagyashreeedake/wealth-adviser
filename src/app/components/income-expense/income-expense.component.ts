@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TransactionPopupComponent } from '../transaction-popup/transaction-popup.component';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
 import { Subscription } from 'rxjs';
+import { IncomeExpenceService } from 'src/app/services/income-expence.service';
 // import { TransactionPopupComponent } from './transaction-popup/transaction-popup.component';
 
 @Component({

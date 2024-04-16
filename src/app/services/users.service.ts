@@ -16,6 +16,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UsersService {
+  getIdByUid(uid: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(private firestore: Firestore, private authService: AuthService) {}
 
   get currentUserProfile$(): Observable<ProfileUser | null> {

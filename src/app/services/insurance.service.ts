@@ -18,6 +18,11 @@ import { ProfileInsurance } from '../models/insurance';
   providedIn: 'root'
 })
 export class InsuranceService {
+  // user$: Observable<any> | undefined;
+  getInsuranceByid: any;
+  getIdByUid(uid: any) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private firestore: Firestore, private authService: AuthService) {}
 
