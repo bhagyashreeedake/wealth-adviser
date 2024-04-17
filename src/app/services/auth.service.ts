@@ -14,6 +14,9 @@ import { concatMap, from, Observable, of, switchMap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
+  getCurrentUserUID() {
+    throw new Error('Method not implemented.');
+  }
   currentUser$ = authState(this.auth);
 
   constructor(private auth: Auth) {}

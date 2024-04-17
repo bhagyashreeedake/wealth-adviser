@@ -10,8 +10,8 @@ import { DataServiceService } from 'src/app/services/data/data-service.service';
   styleUrls: ['./charts.component.css']
 })
 export class ChartsComponent implements OnInit {
-  totalInitialInvestment: number = 0;
-  totalLoanAmount: number = 0;
+  totalInitialInvestment!: number;
+  totalLoanAmount!: number;
   totalIncome!:number
   totalExpence!:number 
   totalBalance!:number 

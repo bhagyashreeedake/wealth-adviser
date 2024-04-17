@@ -1,5 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProfileIncomeExpence } from 'src/app/models/income-expence';
+import { IncomeExpenceService } from 'src/app/services/income-expence.service';
+import { UsersService } from 'src/app/services/users.service';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
 
 @Component({
@@ -8,6 +11,7 @@ import { DataServiceService } from 'src/app/services/data/data-service.service';
   styleUrls: ['./transaction-popup.component.css']
 })
 export class TransactionPopupComponent {
+
   transactionType: string = 'Income';
   incomeType: string = '';
   expenseType: string = '';
@@ -15,12 +19,26 @@ export class TransactionPopupComponent {
   amount: number = 0;
   date!: Date;
 
+  formData: any = {};
+  user$ = this.usersService.currentUserProfile$;
+  currentUserIncomeexpence: ProfileIncomeExpence | null = null;
+  currentincomeexpence$: any;
+  
+
   constructor(
     public dialogRef: MatDialogRef<TransactionPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dataservice:DataServiceService
+    private dataservice:DataServiceService,
+    private usersService: UsersService,
+    private incomeexpence: IncomeExpenceService
   ) {}
 
+  ngOnInit(): void {
+    // Initialize form data with the received data
+    this.formData = { ...this.data };
+  }
+
+  
   onNoClick(): void {
     this.dialogRef.close();
   }

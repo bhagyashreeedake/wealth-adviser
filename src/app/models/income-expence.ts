@@ -7,4 +7,6 @@ export interface ProfileIncomeExpence {
     quarterlyExpense: number;
     yearlyExpense: number;
     totalBalance: number;
+    totalIncome:number;
+    totalExpense:number
   }

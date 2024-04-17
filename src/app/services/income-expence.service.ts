@@ -32,8 +32,14 @@ export class IncomeExpenceService {
     );
   }
 
-  addIncomeexpence(user: ProfileIncomeExpence, id:any): Observable<void> {
-    const ref = doc(this.firestore, 'incomeexpence', user.uid+id);
+  saveIncomeExpence(user: ProfileIncomeExpence, id:any): Observable<void> {
+    const ref = doc(this.firestore, 'incomeexpence', user.uid);
+    // const docRef = doc(this.firestore, 'incomeExpenses', uid);
+    return from(setDoc(ref, user));
+  }
+
+  addIncomeexpence(user: ProfileIncomeExpence): Observable<void> {
+    const ref = doc(this.firestore, 'incomeexpence', user.uid);
     return from(setDoc(ref, user));
   }
 
@@ -42,8 +48,10 @@ export class IncomeExpenceService {
     return from(updateDoc(ref, { ...user }));
   }
 
-  getIncomeexpenceByUid(uid: string, id:string): Observable<ProfileIncomeExpence | null> {
-    const ref = doc(this.firestore, 'incomeexpence', uid+id);
+  getIncomeexpenceByUid(uid: string): Observable<ProfileIncomeExpence | null> {
+    const ref = doc(this.firestore, 'incomeexpence', uid);
     return docData(ref) as Observable<ProfileIncomeExpence>;
   }
 }
+
+
