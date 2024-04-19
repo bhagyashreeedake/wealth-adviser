@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TransactionPopupComponent } from '../transaction-popup/transaction-popup.component';
 import { NewTransactionDialogComponent } from '../new-transaction-dialog/new-transaction-dialog.component';
 // import { TransactionDialogComponent } from '..Components/transaction-dialog/transaction-dialog.component'; // Import TransactionData interface
 
 
 
 export interface TransactionData {
+  transactionType: string;
+  incomeType: string;
+  expenseType: string;
   description: string;
   amount: number;
   date: Date;
-  type: string;
+
+  
 }
 
 
@@ -25,7 +30,7 @@ export class TransactionComponent implements OnInit {
   totalAmount: number = 0;
   transactions: TransactionData[] = []; // Initialize with your transaction data structure
 
-  displayedColumns: string[] = ['description', 'amount', 'date', 'actions'];
+  displayedColumns: string[] = ['transactionType', 'description', 'amount', 'date', 'actions'];
 
   constructor(private dialog: MatDialog) { }
 
@@ -33,11 +38,16 @@ export class TransactionComponent implements OnInit {
     // Initialize transactions data
   }
 
-  openNewTransactionDialog(): void {
-    const dialogRef = this.dialog.open(NewTransactionDialogComponent, {
+  opentransactionpopup(): void{
+    const dialogRef = this.dialog.open(TransactionPopupComponent, {
       width: '500px',
-      // Add any necessary data or configuration here
-    });
+  });
+
+  // openNewTransactionDialog(): void {
+  //   const dialogRef = this.dialog.open(NewTransactionDialogComponent, {
+  //     width: '500px',
+  //     // Add any necessary data or configuration here
+  //   });
 
     dialogRef.afterClosed().subscribe((result: TransactionData) => {
       if (result) {
@@ -50,9 +60,9 @@ export class TransactionComponent implements OnInit {
       }
 
       if (result) {
-        if (result.type === 'income') {
+        if (result.transactionType === 'income') {
           this.totalIncome += result.amount;
-        } else if (result.type === 'expense') {
+        } else if (result.transactionType === 'expense') {
           this.totalExpense += result.amount;
         }
         this.totalAmount = this.totalIncome - this.totalExpense;

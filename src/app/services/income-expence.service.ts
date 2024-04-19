@@ -52,6 +52,16 @@ export class IncomeExpenceService {
     const ref = doc(this.firestore, 'incomeexpence', uid);
     return docData(ref) as Observable<ProfileIncomeExpence>;
   }
+
+  // getIncomeExpenseData(uid: string): Observable<any> {
+  //   return this.firestore.collection('users').doc(uid).valueChanges();
+  // }
+  // getIncomeExpenseData(uid: string): Observable<ProfileIncomeExpence | null> {
+  //   const ref = doc(this.firestore, 'incomeexpence', uid);
+  //   // const docRef = doc(this.firestore, 'incomeExpenses', uid);
+  //   return docData(ref) as Observable<ProfileIncomeExpence>;
+  // }
+
 }
 
 

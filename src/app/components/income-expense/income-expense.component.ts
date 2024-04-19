@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionPopupComponent } from '../transaction-popup/transaction-popup.component';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { IncomeExpenceService } from 'src/app/services/income-expence.service';
 // import { TransactionPopupComponent } from './transaction-popup/transaction-popup.component';
 import { ProfileIncomeExpence } from 'src/app/models/income-expence';
@@ -22,14 +22,22 @@ export class IncomeExpenseComponent implements OnInit {
   // quarterlyExpense!: number;
   // yearlyExpense!: number;
   // totalBalance!: number;
+  // transactions: any[] = [];
+  // incomeTypes: string[] = ['Active Income', 'Passive Income', 'Other Income'];
+  // expenseTypes: string[] = ['Monthly Expense', 'Quarterly Expense', 'Yearly Expense'];
+  // currentuid: string = ''; // Initialize currentuid
+  
+
   transactions: any[] = []; 
   
   user$ = this.usersService.currentUserProfile$;
   currentuid:any
   incomeexpenceInfo:any[]=[];
   data: any;// Define an array to store transactions
+  incomeExpenceData: any;
 // openTransactionPopup : boolean = false;
-
+  // uid: string = 'your_uid_here'; // Replace with the UID you want to fetch data for
+  // userData$!: Observable<any>;
 
 deleteTransaction(transaction: any) {
 // Assuming this method deletes a transaction from the array
@@ -68,13 +76,30 @@ addTransaction(transaction: any) {
   constructor(private dialog: MatDialog, private dataservice:DataServiceService, private incomeexpenceservice: IncomeExpenceService, private usersService: UsersService) { }
   ngOnInit(): void {
     debugger
+    // Fetch data for the specific UID when the component initializes
+    // this.userData$ = this.incomeexpenceservice.getIncomeExpenseData(this.uid);
+    // // Subscribe to changes and handle data or errors
+    // this.userData$.subscribe(
+    //   data => {
+    //     console.log('User data:', data);
+    //     // Update your component properties with the fetched data as needed
+    //   },
+    //   error => {
+    //     console.error('Error fetching user data:', error);
+    //   }
+    // );
+  
+    
     this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
     this.totalBalance= totalbalance
        })
-
+       
        this.user$.subscribe(data=>{
         this.currentuid = data?.uid
         console.log("current user id", this.currentuid);
+        if (this.currentuid) {
+                this.fetchIncomeExpenseData(this.currentuid); // Fetch data if UID is available
+              }
        })
     
     this.user$.pipe(
@@ -84,16 +109,19 @@ addTransaction(transaction: any) {
           return of(null);
         } 
         return this.incomeexpenceservice.getIncomeexpenceByUid(data.uid);
+        
       
       })
     ).subscribe((incomeexpenceData:any) => {
       if (incomeexpenceData) {
         // Handle the insurance data here
+        this.setFetchedDataintoform(incomeexpenceData);
         debugger
         this.incomeexpenceInfo.push(incomeexpenceData)
+
         console.log('Incomeexpence Data:', incomeexpenceData);
         console.log("incomeexpence inside array ", this.incomeexpenceInfo)
-        console.log("id",this.incomeexpenceInfo[0].id)
+        // console.log("id",this.incomeexpenceInfo[0].id)
 
         // if(this.incomeexpenceInfo){
         //   for(let i=0;i<this.incomeexpenceInfo.length;i++){
@@ -106,8 +134,76 @@ addTransaction(transaction: any) {
         console.log('No incomeexpence data found.');
       }
     });
+    
+  }
+  setFetchedDataintoform(incomeexpenceData: any) {
+  //   {
+  //     "totalBalance": 250000,
+  //     "totalIncome": 250000,
+  //     "quarterlyExpense": 0,
+  //     "uid": "i03bnS3jJJYstb2ZEoxDUj0RasJ3",
+  //     "monthlyExpense": 0,
+  //     "otherIncome": 0,
+  //     "passiveIncome": 250000,
+  //     "totalExpense": 0,
+  //     "yearlyExpense": 0,
+  //     "activeIncome": 0
+  // }
+    this.quarterlyExpense = incomeexpenceData.quarterlyExpense;
+    this.monthlyExpense=incomeexpenceData.monthlyExpense;
+    this.otherIncome= incomeexpenceData.otherIncome;
+    this.passiveIncome=incomeexpenceData.passiveIncome;
+    this.yearlyExpense=incomeexpenceData.yearlyExpense;
+    this.activeIncome=incomeexpenceData.activeIncome;
+    this.totalBalance = incomeexpenceData.totalBalance;
+    
+  }
+
+  // ngOnInit(): void {
+  //   // Fetch current user's UID
+  //   this.usersService.currentUserProfile$.subscribe(data => {
+  //     this.currentuid = data?.uid || ''; // Assign UID or empty string if not available
+  //     if (this.currentuid) {
+  //       this.fetchIncomeExpenseData(this.currentuid); // Fetch data if UID is available
+  //     }
+  //   });
+  // }
+  
+    
+  fetchIncomeExpenseData(uid: string): void {
+    // Fetch income and expense data from Firestore using the UID
+    this.incomeexpenceservice.getIncomeexpenceByUid(uid).subscribe((incomeexpenceData: ProfileIncomeExpence | null) => {
+      
+
+      if (incomeexpenceData) {
+        // Data found, update component properties
+        this.updateComponentProperties(incomeexpenceData);
+        // console.log("incomeexpence final array ",this.)
+      } else {
+        // No data found, handle as needed
+        console.log('No income-expense data found for the user.');
+      }
+    });
+  }
+
+  updateComponentProperties(data: ProfileIncomeExpence): void {
+    // Update component properties with fetched data
+    // this.incomeexpenceInfo = []
+    this.transactions = []; // Clear transactions array
+    console.log("incomeexpence outside array ", this.transactions)
+    // Update other properties as needed
   }
   
+//   updateComponentProperties(data: ProfileIncomeExpence): void {
+//     // Update component properties with fetched data
+//     const updatedData: ProfileIncomeExpence = {
+//         ...data, // Copy existing properties from data
+//         incomeexpenceInfo: this.incomeexpenceInfo // Add or update incomeexpenceInfo property with the array
+//     };
+//     console.log("Updated ProfileIncomeExpence object:", updatedData);
+//     // Now you can use the updatedData object as needed
+// }
+    
   
   // constructor(public dialog: MatDialog, private dataservice:DataServiceService) {}
   // ngOnInit(): void {
@@ -153,6 +249,7 @@ addTransaction(transaction: any) {
           this.handleExpenseTransaction(result);
         }
 
+        // this.updateincomeexpence(result.type,result.amount);
         let a:ProfileIncomeExpence = this.getalldata()
         console.log('income,ecpense result', result)
         this.incomeexpenceservice.addIncomeexpence(a)
@@ -199,14 +296,15 @@ addTransaction(transaction: any) {
     }
     // this.calculateTotalBalance();
   }
-  // updateincomeexpence(i: any, id: any){
-  //   debugger
-  //   if(this.transactionType == 'Income'){
-  //     this.dataservice.addIncome(this.amount)
-  //   }else{
-  //     this.dataservice.addExpense(this.amount)
-  //   }
-  // }
+  updateincomeexpence(type: any, amount:any){
+
+    debugger
+    if(type == 'Income'){
+      this.dataservice.addIncome(amount)
+    }else if(type =='Expense'){
+      this.dataservice.addExpense(amount)
+    }
+  }
   handleExpenseTransaction(data: any): void {
     if (data.expenseType === 'Monthly Expense') {
       this.monthlyExpense += data.amount;
