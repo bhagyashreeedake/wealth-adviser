@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
-import { Subscription } from 'rxjs';
+// import { Subscription } from 'rxjs';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
+import { Observable, Subscription } from 'rxjs';
+import { IncomeExpenceService } from 'src/app/services/income-expence.service';
+// import { TransactionPopupComponent } from './transaction-popup/transaction-popup.component';
+import { ProfileIncomeExpence } from 'src/app/models/income-expence';
+import { forkJoin, of, switchMap } from 'rxjs';
+import { uid } from 'chart.js/dist/helpers/helpers.core';
+import { UsersService } from 'src/app/services/users.service';
 
 
 @Component({
@@ -15,6 +22,13 @@ export class ChartsComponent implements OnInit {
   totalIncome!:number
   totalExpence!:number 
   totalBalance!:number 
+  transactions: any[] = [];
+  
+  user$ = this.usersService.currentUserProfile$;
+  currentuid:any
+  incomeexpenceInfo:any[]=[];
+  data: any;// Define an array to store transactions
+  incomeExpenceData: any;
   // totalInitialamount!: number
   private totalIncomeSubscription!: Subscription;
   private  totalexpencesubscription!: Subscription;
@@ -22,10 +36,11 @@ export class ChartsComponent implements OnInit {
   private totalInitialInvestmentSubscription!: Subscription;
   private totalLoanamountSubscription!: Subscription;
   myDonutChart: any;
+  // usersService: any;
 
   
 
-  constructor(private dataservice:DataServiceService) { }
+  constructor(private dataservice:DataServiceService, private usersService:UsersService) { }
 
   ngOnInit(): void {
 

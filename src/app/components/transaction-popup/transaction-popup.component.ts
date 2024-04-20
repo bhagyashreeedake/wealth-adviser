@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProfileIncomeExpence } from 'src/app/models/income-expence';
 import { IncomeExpenceService } from 'src/app/services/income-expence.service';
@@ -10,7 +10,17 @@ import { DataServiceService } from 'src/app/services/data/data-service.service';
   templateUrl: './transaction-popup.component.html',
   styleUrls: ['./transaction-popup.component.css']
 })
-export class TransactionPopupComponent {
+
+// export class NewTransactionDialogComponent implements OnInit {
+//   transaction: any = {
+//     date: new Date(), // Set default date to today
+//     type: 'income' // Default transaction type to income
+//   };
+export class TransactionPopupComponent implements OnInit{
+  // transaction: any ={
+  //   date: new Date(),
+  //   transactionType: 'income'
+  // }
 
   transactionType: string = 'Income';
   incomeType: string = '';
@@ -51,4 +61,7 @@ export class TransactionPopupComponent {
       this.dataservice.addExpense(this.amount)
     }
   }
+//   submitTransaction(): void {
+//     this.dialogRef.close(this.transaction);
+//   }
 }

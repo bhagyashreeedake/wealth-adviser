@@ -9,11 +9,23 @@ import { ProfileIncomeExpence } from 'src/app/models/income-expence';
 import { forkJoin, of, switchMap } from 'rxjs';
 import { uid } from 'chart.js/dist/helpers/helpers.core';
 import { UsersService } from 'src/app/services/users.service';
+
+// export interface TransactionData {
+
+//   transactionType: string;
+//   incomeType: string;
+//   expenseType: string;
+//   description: string;
+//   amount: number;
+//   date: Date;
+// }
 @Component({
   selector: 'app-income-expense',
   templateUrl: './income-expense.component.html',
   styleUrls: ['./income-expense.component.css']
 })
+
+
 export class IncomeExpenseComponent implements OnInit {
   // activeIncome!: number;
   // passiveIncome!: number;
@@ -27,8 +39,10 @@ export class IncomeExpenseComponent implements OnInit {
   // expenseTypes: string[] = ['Monthly Expense', 'Quarterly Expense', 'Yearly Expense'];
   // currentuid: string = ''; // Initialize currentuid
   
-
-  transactions: any[] = []; 
+  // totalIncome: number = 0;
+  // totalExpense: number = 0;
+  // totalAmount: number = 0;
+  transactions: any[] = [];
   
   user$ = this.usersService.currentUserProfile$;
   currentuid:any
@@ -66,7 +80,7 @@ addTransaction(transaction: any) {
   yearlyExpense: number = 0;
   totalBalance: number = 0;
 
-  private  totalBalanceSubscription!: Subscription;
+  // private  totalBalanceSubscription!: Subscription;
 
 
   incomeTypes: string[] = ['Active Income', 'Passive Income', 'Other Income'];
@@ -90,9 +104,9 @@ addTransaction(transaction: any) {
     // );
   
     
-    this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
-    this.totalBalance= totalbalance
-       })
+    // this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
+    // this.totalBalance= totalbalance
+    //    })
        
        this.user$.subscribe(data=>{
         this.currentuid = data?.uid
@@ -255,6 +269,26 @@ addTransaction(transaction: any) {
         this.incomeexpenceservice.addIncomeexpence(a)
       }
     });
+
+    // dialogRef.afterClosed().subscribe((result: TransactionData) => {
+    //   if (result) {
+    //     this.transactions = [...this.transactions, result]; // Concatenate new transaction with existing array
+      
+    // // Add the new transaction to the transactions array
+        
+    //     console.log("this is data from dialog", result);
+    //     console.log('this is transaction Array', this.transactions)
+    //   }
+
+    //   if (result) {
+    //     if (result.transactionType === 'income') {
+    //       this.totalIncome += result.amount;
+    //     } else if (result.transactionType === 'expense') {
+    //       this.totalExpense += result.amount;
+    //     }
+    //     this.totalAmount = this.totalIncome - this.totalExpense;
+    //   }
+    // });
   }
   getalldata(){
 
@@ -349,6 +383,8 @@ addTransaction(transaction: any) {
     }
     return 0;
   }
+
+  
 }
 
 
