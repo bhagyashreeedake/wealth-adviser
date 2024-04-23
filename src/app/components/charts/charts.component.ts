@@ -9,6 +9,10 @@ import { ProfileIncomeExpence } from 'src/app/models/income-expence';
 import { forkJoin, of, switchMap } from 'rxjs';
 import { uid } from 'chart.js/dist/helpers/helpers.core';
 import { UsersService } from 'src/app/services/users.service';
+import { InvestmentService } from 'src/app/services/investment.service';
+import { InsuranceService } from 'src/app/services/insurance.service';
+import { LoanService } from 'src/app/services/loan.service';
+import { FinancescoreService } from 'src/app/services/financescore.service';
 
 
 @Component({
@@ -21,7 +25,7 @@ export class ChartsComponent implements OnInit {
   totalLoanAmount!: number;
   totalIncome!:number
   totalExpence!:number 
-  totalBalance!:number 
+  // totalBalance!:number 
   transactions: any[] = [];
   
   user$ = this.usersService.currentUserProfile$;
@@ -37,13 +41,60 @@ export class ChartsComponent implements OnInit {
   private totalLoanamountSubscription!: Subscription;
   myDonutChart: any;
   // usersService: any;
+  activeIncome: number = 0;
+  passiveIncome: number = 0;
+  otherIncome: number = 0;
+  monthlyExpense: number = 0;
+  quarterlyExpense: number = 0;
+  yearlyExpense: number = 0;
+  totalBalance: number = 0;
 
   
 
-  constructor(private dataservice:DataServiceService, private usersService:UsersService) { }
-
+  constructor(private dataservice:DataServiceService, private usersService:UsersService, private incomeexpenceservice: IncomeExpenceService, private invesmentservice: InvestmentService, private insuranceservice:InsuranceService, private loanservice:LoanService, private financescore: FinancescoreService) { }
+  calculateScore(inputs: any): void {
+    const score = this.financescore.calculateFinancialFitnessScore(inputs);
+    console.log(`Financial Fitness Score: ${score}`);
+    // Now you can use this score to update your meter gauge component
+  }
   ngOnInit(): void {
 
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits null
+          return of(null);
+        } 
+        return this.incomeexpenceservice.getIncomeexpenceByUid(data.uid);
+        
+      
+      })
+    ).subscribe((incomeexpenceData:any) => {
+      if (incomeexpenceData) {
+        // Handle the insurance data here
+        // this.setFetchedDataintoform(incomeexpenceData);
+        debugger
+        this.incomeexpenceInfo.push(incomeexpenceData)
+
+        console.log('Incomeexpence Data:', incomeexpenceData);
+        console.log("incomeexpence inside array ", this.incomeexpenceInfo)
+        // console.log("id",this.incomeexpenceInfo[0].id)
+
+        // if(this.incomeexpenceInfo){
+        //   for(let i=0;i<this.incomeexpenceInfo.length;i++){
+
+        //     this.updateincomeexpence(this.incomeexpenceInfo[i],this.incomeexpenceInfo[i].id)
+        //   }
+        // }
+      } else {
+        // Handle case when insurance data is null
+        console.log('No incomeexpence data found.');
+      }
+    });
+    this.setFetchedDataintoform(this.totalBalance)
+   
+    // const totalBalance = this.incomeExpenceData[6];
+    // console.log('totalbalannce value is', totalBalance)
     this.dataservice.totalInitialInvestment$.subscribe(total => {
       this.totalInitialInvestment = total;
     })
@@ -71,9 +122,9 @@ export class ChartsComponent implements OnInit {
       this.updateChartData();
     })
 
-    this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
-      this.totalBalance= totalbalance
-    })
+    // this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
+    //   this.totalBalance= totalbalance
+    // })
     let expence = this.dataservice.getlatestTotalExpence()
     // Initialize your DOM-related operations in ngOnInit
     document.addEventListener('DOMContentLoaded', () => {
@@ -107,7 +158,38 @@ export class ChartsComponent implements OnInit {
     });
     this.initChart();
 
+    this.calculateScore("")
+
   }
+
+  setFetchedDataintoform(incomeexpenceData: any) {
+    //   {
+    //     "totalBalance": 250000,
+    //     "totalIncome": 250000,
+    //     "quarterlyExpense": 0,
+    //     "uid": "i03bnS3jJJYstb2ZEoxDUj0RasJ3",
+    //     "monthlyExpense": 0,
+    //     "otherIncome": 0,
+    //     "passiveIncome": 250000,
+    //     "totalExpense": 0,
+    //     "yearlyExpense": 0,
+    //     "activeIncome": 0
+    // }
+      this.quarterlyExpense = incomeexpenceData.quarterlyExpense;
+      this.monthlyExpense=incomeexpenceData.monthlyExpense;
+      this.otherIncome= incomeexpenceData.otherIncome;
+      this.passiveIncome=incomeexpenceData.passiveIncome;
+      this.yearlyExpense=incomeexpenceData.yearlyExpense;
+      this.activeIncome=incomeexpenceData.activeIncome;
+      this.totalBalance = incomeexpenceData.totalBalance;
+      
+    }
+
+    setFetchedDataIntoForm(incomeExpenseData: any) {
+      this.totalBalance = incomeExpenseData.totalBalance;
+      console.log('totalbalannce value is', this.totalBalance)
+  }
+  
 
   initChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;

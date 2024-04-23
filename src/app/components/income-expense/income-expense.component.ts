@@ -108,13 +108,13 @@ addTransaction(transaction: any) {
     // this.totalBalance= totalbalance
     //    })
        
-       this.user$.subscribe(data=>{
-        this.currentuid = data?.uid
-        console.log("current user id", this.currentuid);
-        if (this.currentuid) {
-                this.fetchIncomeExpenseData(this.currentuid); // Fetch data if UID is available
-              }
-       })
+      //  this.user$.subscribe(data=>{
+      //   this.currentuid = data?.uid
+      //   console.log("current user id", this.currentuid);
+      //   if (this.currentuid) {
+      //           this.fetchIncomeExpenseData(this.currentuid); // Fetch data if UID is available
+      //         }
+      //  })
     
     this.user$.pipe(
       switchMap((data: any) => {
@@ -184,29 +184,29 @@ addTransaction(transaction: any) {
   // }
   
     
-  fetchIncomeExpenseData(uid: string): void {
-    // Fetch income and expense data from Firestore using the UID
-    this.incomeexpenceservice.getIncomeexpenceByUid(uid).subscribe((incomeexpenceData: ProfileIncomeExpence | null) => {
+  // fetchIncomeExpenseData(uid: string): void {
+  //   // Fetch income and expense data from Firestore using the UID
+  //   this.incomeexpenceservice.getIncomeexpenceByUid(uid).subscribe((incomeexpenceData: ProfileIncomeExpence | null) => {
       
 
-      if (incomeexpenceData) {
-        // Data found, update component properties
-        this.updateComponentProperties(incomeexpenceData);
-        // console.log("incomeexpence final array ",this.)
-      } else {
-        // No data found, handle as needed
-        console.log('No income-expense data found for the user.');
-      }
-    });
-  }
+  //     if (incomeexpenceData) {
+  //       // Data found, update component properties
+  //       this.updateComponentProperties(incomeexpenceData);
+  //       // console.log("incomeexpence final array ",this.)
+  //     } else {
+  //       // No data found, handle as needed
+  //       console.log('No income-expense data found for the user.');
+  //     }
+  //   });
+  // }
 
-  updateComponentProperties(data: ProfileIncomeExpence): void {
-    // Update component properties with fetched data
-    // this.incomeexpenceInfo = []
-    this.transactions = []; // Clear transactions array
-    console.log("incomeexpence outside array ", this.transactions)
-    // Update other properties as needed
-  }
+  // updateComponentProperties(data: ProfileIncomeExpence): void {
+  //   // Update component properties with fetched data
+  //   // this.incomeexpenceInfo = []
+  //   this.transactions = []; // Clear transactions array
+  //   console.log("incomeexpence outside array ", this.transactions)
+  //   // Update other properties as needed
+  // }
   
 //   updateComponentProperties(data: ProfileIncomeExpence): void {
 //     // Update component properties with fetched data
@@ -311,7 +311,7 @@ addTransaction(transaction: any) {
     a.monthlyExpense = this.monthlyExpense;
     a.quarterlyExpense = this.quarterlyExpense;
     a.yearlyExpense=this.yearlyExpense;
-    a.totalBalance = this.totalBalance;
+    a.totalBalance = this.getTotalBalance();
     a.totalIncome= this.getTotalIncome();
     a.totalExpense = this.getTotalExpense()
     a.uid= this.currentuid
@@ -360,6 +360,12 @@ addTransaction(transaction: any) {
 
   getTotalExpense(): number {
     return this.monthlyExpense + this.quarterlyExpense + this.yearlyExpense;
+  }
+
+  getTotalBalance(): number{
+    const totalIncome = this.getTotalIncome();
+    const totalExpense = this.getTotalExpense();
+    return totalIncome - totalExpense;
   }
 
   getIncomeValue(type: string): number {

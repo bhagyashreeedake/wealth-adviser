@@ -25,7 +25,7 @@
 
   <div class="total-balance">
     <h3>Total Balance</h3>
-    <div class="value">{{ totalBalance | currency: 'INR' }}</div>
+    <div class="value">{{ getTotalBalance() | currency: 'INR' }}</div>
   </div>
 
   <button (click)="openTransactionPopup()">Add Transaction</button>
