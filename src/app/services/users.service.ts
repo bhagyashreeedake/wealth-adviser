@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UsersService {
+  currentUser$: any;
   getIdByUid(uid: any) {
     throw new Error('Method not implemented.');
   }

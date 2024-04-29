@@ -55,7 +55,8 @@ export class ChartsComponent implements OnInit {
 
   // /export class ChartsComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
-    
+  combinedData: any;
+    uid: any;
   
 
   constructor(private dataservice:DataServiceService, private usersService:UsersService, private incomeexpenceservice: IncomeExpenceService, private invesmentservice: InvestmentService, private insuranceservice:InsuranceService, private loanservice:LoanService, private financescore: FinancescoreService, private chartservice: ChartService) {this.chartservice.fetchAllData() }
@@ -67,10 +68,28 @@ export class ChartsComponent implements OnInit {
 
   
   ngOnInit(): void {
+    // this.usersService.currentUser$.subscribe((user: { uid: any; }) => {
+    //   if (user) {
+    //     const uid = user.uid; // Extract the uid from the user object
+        
+    //     this.chartservice.fetchAllData(uid) // Call fetchAllData with the uid
+    //       .then(combinedData => {
+    //         this.combinedData = combinedData;
+    //         console.log('Combined data:', this.combinedData);
+    //         // Use the combinedData in your component logic
+    //         console.log('ngOnInit', this.chartservice.combinedData$);
+    //       })
+    //       .catch(error => {
+    //         console.error('Error fetching combined data:', error);
+    //       });
+    //   }
+    // });
+  
 
-    // this.chartservice.fetchAllData()
+    this.chartservice.fetchAllData()
     console.log('ngOnInit', this.chartservice.combinedData$);
-    this.subscription = this.chartservice.combinedData$.subscribe(data => {
+    this.totalBalance = this.chartservice.combinedData$.incomeexpenseInfo.totalBalance;
+    this.subscription = this.chartservice.combinedData$.subscribe((data: any) => {
       console.log('Combined data:', data);
       this.data = data;
       // Now you can assign this data to a component property (optional)
