@@ -102,16 +102,21 @@ export class ChartService {
         // Get references to documents based on your folder structure
         const userRef = doc(this.firestore, 'users', uid);
         const incomeExpenseRef = doc(this.firestore, 'incomeexpence', uid);
+        
         const insuranceRef = doc(this.firestore, 'insurance', uid);
         const investmentRef = doc(this.firestore, 'investment', uid);
         const loanRef = doc(this.firestore, 'loan', uid);
   
         // Fetch data from user collection (separate calls for clarity)
+
+        // getDoc(userRef).then(userDocSnapshot => {
+          //         const userInfo = userDocSnapshot.data();
+          //         console.log("userref value",userRef)
         getDoc(userRef)
             .then(userSnapshot => {
               if (userSnapshot.exists()) {
-                const userData = userSnapshot.data();
-                console.log("User data:", userData);
+                const userinfo = userSnapshot.data();
+                console.log("User data:", userinfo);
                 // Use the fetched userData
               } else {
                 console.log("User document not found");
@@ -124,8 +129,8 @@ export class ChartService {
             getDoc(investmentRef)
             .then(investmentSnapshot => {
               if (investmentSnapshot.exists()) {
-                const investmentData = investmentSnapshot.data();
-                console.log("investment data:", investmentData);
+                const investmentinfo = investmentSnapshot.data();
+                console.log("investment data:", investmentinfo);
                 // Use the fetched userData
               } else {
                 console.log("investment document not found");
@@ -139,8 +144,8 @@ export class ChartService {
             getDoc(loanRef)
             .then(loanSnapshot => {
               if (loanSnapshot.exists()) {
-                const loanData = loanSnapshot.data();
-                console.log("loan data:", loanData);
+                const loaninfo = loanSnapshot.data();
+                console.log("loan data:", loaninfo);
                 // Use the fetched userData
               } else {
                 console.log("loan document not found");
@@ -156,9 +161,13 @@ export class ChartService {
         getDoc(incomeExpenseRef)
             .then(incomeSnapshot => {
               if (incomeSnapshot.exists()) {
-                const incomeExpenseData = incomeSnapshot.data();
-                console.log("income expence information", incomeExpenseData);
+                const incomeExpenseInfo = incomeSnapshot.data();
+                console.log("income expence information", incomeExpenseInfo);
                 // Use the fetched incomeExpenseData
+                // // Now you can access properties within the incomeExpenseData object
+                // const income = incomeExpenseData['income']; // Assuming "income" is a property
+                // const expense = incomeExpenseData['expense']; // Assuming "expense" is a property
+                // console.log("income value", incomeExpenseData['income'])
               } else {
                 console.log("Income expense document not found");
               }
@@ -170,8 +179,8 @@ export class ChartService {
             getDoc(insuranceRef)
             .then(insuranceSnapshot => {
               if (insuranceSnapshot.exists()) {
-                const insuranceData = insuranceSnapshot.data();
-                console.log("Insurance data:", insuranceData);
+                const insuranceinfo = insuranceSnapshot.data();
+                console.log("Insurance data:", insuranceinfo)
                 // Use the fetched insuranceData
               } else {
                 console.log("Insurance document not found");
@@ -185,11 +194,11 @@ export class ChartService {
                       userinfo: userRef,
                       investmentinfo:investmentRef,
                       insuranceinfo: insuranceRef,
-                      incomeexpenceinfo: incomeExpenseRef,
+                      incomeexpenceInfo: incomeExpenseRef,
                       loaninfo: loanRef
                     }
                     console.log("totalinformation",a)
-                    console.log("inccomeexpenceinfo value", incomeExpenseRef)
+                    console.log("inccomeexpenceinfo value", userRef)
                     // Combine observables using combineLatest
                     // this.combinedData$ = combineLatest([
                     //   userRef.valueChanges(),

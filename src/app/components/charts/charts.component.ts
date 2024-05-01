@@ -86,9 +86,9 @@ export class ChartsComponent implements OnInit {
     // });
   
 
-    this.chartservice.fetchAllData()
+    // this.chartservice.fetchAllData()
     console.log('ngOnInit', this.chartservice.combinedData$);
-    this.totalBalance = this.chartservice.combinedData$.incomeexpenseInfo.totalBalance;
+    this.totalBalance = this.chartservice.combinedData$.this.incomeexpenceinfo.totalBalance;
     this.subscription = this.chartservice.combinedData$.subscribe((data: any) => {
       console.log('Combined data:', data);
       this.data = data;

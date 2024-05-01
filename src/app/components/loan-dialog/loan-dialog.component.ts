@@ -47,6 +47,7 @@ export class LoanDialogComponent implements OnInit {
         maturityDate: this.formData.maturityDate,
         maturityamount: this.formData.maturityAmount,
         annualRateOfInterest: this.formData.annualRateOfInterest,
+        loanCards: [], 
         id: this.data.id
     };
     // console.log("insurancedatsa", investmentData)
