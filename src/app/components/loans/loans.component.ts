@@ -52,9 +52,11 @@ export class LoansComponent implements OnInit {
       if (!data || !data.uid) {
         return of([]);
       }
+      
       const uid = data.uid;
       const observables: Observable<ProfileLoan | null>[] = [];
       for (let i = 1; i <= 6; i++) {
+        return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
         observables.push(this.loanservice.getLoanByUidAndId(uid, i.toString()));
       }
       return forkJoin(observables);
@@ -63,15 +65,17 @@ export class LoansComponent implements OnInit {
       console.error('Error fetching loan data:', error);
       return of([]); // Return observable that emits an empty array to continue the chain
     })
-  ).subscribe((loanData: (ProfileLoan | null)[]) => {
+  ).subscribe((loanData: any) => {
     console.log('Fetched loan data:', loanData);
-    loanData.forEach((loan, index) => {
+    if (loanData && loanData.length > 0) {
+    loanData.forEach((loan:any, index: number) => {
       if (loan) {
         this.updateSmallCard(index + 1, loan); // Update small card data for each loan
       }
     });
+  }
   });
-  
+
   }
   // fetchLoanData() {
   //   this.loanservice.getLoanByUid('your-uid-here').subscribe(

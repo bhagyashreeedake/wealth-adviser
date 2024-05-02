@@ -13,7 +13,7 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { filter, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, filter, forkJoin, from, map, Observable, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ProfileLoan } from '../models/loan';
 
@@ -77,6 +77,19 @@ export class LoanService {
   //   console.log("name of uid is", subcollectionName)
   //   return docData(ref) as Observable<ProfileLoan>;
   // }
+  // getLoanByUidAndId(uid: string, id: string): Observable<ProfileLoan | null> {
+  //   const path = `/loan/${uid}${id}`; // Construct the path dynamically
+  //   const ref = doc(this.firestore, path);
+
+  //   return docData(ref).pipe(
+  //     catchError(error => {
+  //       console.error('Error fetching loan data:', error);
+  //       return of(null);
+  //     })
+  //   ) as Observable<ProfileLoan | null>;
+  // }
+
+  
 
   getLoanByUidAndId(uid: string, id: string): Observable<ProfileLoan | null> {
     if (!id) {
@@ -87,8 +100,19 @@ export class LoanService {
   
     const subcollectionName = `${uid}${id}`; // Combine UID and ID to form subcollection name
     const ref = doc(this.firestore, 'loan', subcollectionName);
+    console.log("ref value is", ref)
     console.log("name of uid is", subcollectionName)
-    return docData(ref) as Observable<ProfileLoan>;
+    // return docData(ref) as Observable<ProfileLoan>;
+    return docData(ref).pipe(
+      map((data: any) => {
+        // Assuming ProfileLoan is the correct type for your data
+        return data as ProfileLoan; // Casting to ProfileLoan
+      }),
+      catchError(error => {
+        console.error('Error fetching loan data:', error);
+        return of(null);
+      })
+    );
   }
 
   
