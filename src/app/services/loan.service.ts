@@ -99,6 +99,8 @@ export class LoanService {
     }
   
     const subcollectionName = `${uid}${id}`; // Combine UID and ID to form subcollection name
+    // const collectionRef = collection(this.firestore, 'loan', subcollectionName);
+
     const ref = doc(this.firestore, 'loan', subcollectionName);
     console.log("ref value is", ref)
     console.log("name of uid is", subcollectionName)
@@ -115,23 +117,33 @@ export class LoanService {
     );
   }
 
-  
-  getLoanByUid(uid: string): Observable<ProfileLoan[]> {
-    const loansCollection = collection(this.firestore, 'loans');
-    const q = query(loansCollection, where('uid', '==', uid));
-    return new Observable<ProfileLoan[]>((observer) => {
-      getDocs(q).then((snapshot: QuerySnapshot<DocumentData>) => {
-        const loanData: ProfileLoan[] = [];
-        snapshot.forEach((doc) => {
-          loanData.push(doc.data() as ProfileLoan);
-        });
-        observer.next(loanData);
-        observer.complete();
-      }).catch((error) => {
-        observer.error(error);
-      });
-    });
+  getCountOfIdsForUid(uid: string): Observable<number> {
+    const q = query(collection(this.firestore, 'loan', uid));
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => querySnapshot.size),
+      catchError(error => {
+        console.error('Error getting count of IDs for UID:', error);
+        return of(0); // Return an observable that emits 0 in case of an error
+      })
+    );
   }
+  
+  // getLoanByUid(uid: string): Observable<ProfileLoan[]> {
+  //   const loansCollection = collection(this.firestore, 'loans');
+  //   const q = query(loansCollection, where('uid', '==', uid));
+  //   return new Observable<ProfileLoan[]>((observer) => {
+  //     getDocs(q).then((snapshot: QuerySnapshot<DocumentData>) => {
+  //       const loanData: ProfileLoan[] = [];
+  //       snapshot.forEach((doc) => {
+  //         loanData.push(doc.data() as ProfileLoan);
+  //       });
+  //       observer.next(loanData);
+  //       observer.complete();
+  //     }).catch((error) => {
+  //       observer.error(error);
+  //     });
+  //   });
+  // }
 
   // getLoansByUid(uid: string): Observable<ProfileLoan[]> {
   //   const loansCollection = collection(this.firestore, 'loans');

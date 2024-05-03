@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoanDialogComponent } from '../loan-dialog/loan-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
-import { Observable, catchError, forkJoin, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, concat, concatMap, forkJoin, of, switchMap, tap } from 'rxjs';
 import { LoanService } from 'src/app/services/loan.service';
 import { ProfileLoan } from 'src/app/models/loan';
 import { UsersService } from 'src/app/services/users.service';
@@ -48,18 +48,19 @@ export class LoansComponent implements OnInit {
   //   this.fetchLoanDataForId(1);
   this.user$.pipe(
     tap(user => console.log('User data:', user)), 
-    switchMap((data: any) => {
+    concatMap((data: any) => {
       if (!data || !data.uid) {
         return of([]);
       }
       
       const uid = data.uid;
       const observables: Observable<ProfileLoan | null>[] = [];
-      for (let i = 1; i <= 6; i++) {
-        return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
+      for (let i = 1; i <6; i++) {
+        // return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
         observables.push(this.loanservice.getLoanByUidAndId(uid, i.toString()));
       }
-      return forkJoin(observables);
+      // return forkJoin(observables);
+       return concat(...observables);
     }),
     catchError(error => {
       console.error('Error fetching loan data:', error);
@@ -67,15 +68,22 @@ export class LoansComponent implements OnInit {
     })
   ).subscribe((loanData: any) => {
     console.log('Fetched loan data:', loanData);
-    if (loanData && loanData.length > 0) {
-    loanData.forEach((loan:any, index: number) => {
-      if (loan) {
-        this.updateSmallCard(index + 1, loan); // Update small card data for each loan
+    // fetchedLoanData.push(loanData);
+    // if (loanData && loanData.length > 0) {
+    // this.loanInfo.push(loanData)
+    // console.log('loan Data:', loanData);
+    // console.log("loan inside array ", this.loanInfo)
+    // // console.log("id",this.loanInfo[0].id)
+    // loanData.forEach((loan:any, index: number) => {
+      // let loan: any; 
+      if (loanData) {
+        // const id = index + 1; // Assuming id starts from 1
+        // this.updateSmallCard(id, loan);
+        // this.updateSmallCard(index + 1, loan); // Update small card data for each loan
+        const id = parseInt(loanData.id); // Assuming id is a string, convert it to a number
+        this.updateSmallCard(id, loanData);
       }
     });
-  }
-  });
-
   }
   // fetchLoanData() {
   //   this.loanservice.getLoanByUid('your-uid-here').subscribe(
